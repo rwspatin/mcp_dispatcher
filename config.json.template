@@ -1,0 +1,85 @@
+{
+  "_comments": {
+    "note": "Cross-platform path examples - use forward slashes for patterns on all platforms",
+    "windows_paths": "C:/Users/*/projects/* or C:/projects/*",
+    "macos_paths": "/Users/*/projects/* or ~/projects/*", 
+    "linux_paths": "/home/*/projects/* or ~/projects/*"
+  },
+  "path_mappings": [
+    {
+      "path_pattern": "/path/to/your/project-type-a*",
+      "mcp_server": {
+        "name": "project-a-mcp",
+        "command": "python",
+        "args": ["/path/to/your/project-a-mcp/server.py"],
+        "description": "Custom MCP Server for Project Type A"
+      }
+    },
+    {
+      "path_pattern": "/path/to/your/project-type-b*", 
+      "mcp_server": {
+        "name": "project-b-mcp",
+        "command": "node",
+        "args": ["/path/to/your/project-b-mcp/server.js"],
+        "description": "Custom Node.js MCP Server for Project Type B"
+      }
+    },
+    {
+      "path_pattern": "/path/to/your/project-type-c*",
+      "mcp_server": {
+        "name": "project-c-mcp",
+        "command": "/path/to/your/project-c-mcp-binary",
+        "args": [],
+        "description": "Custom Binary MCP Server for Project Type C"
+      }
+    }
+  ],
+  "default_mcp_server": {
+    "name": "default-mcp",
+    "command": "python",
+    "args": ["/path/to/your/default-mcp/server.py"],
+    "description": "Default MCP Server"
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "/tmp/mcp_dispatcher.log"
+  },
+  "_platform_examples": {
+    "windows": {
+      "typical_patterns": [
+        "C:/Users/*/projects/web*",
+        "C:/projects/nodejs*",
+        "D:/development/python*"
+      ],
+      "typical_commands": [
+        "python",
+        "node", 
+        "C:/tools/mcp-server.exe"
+      ]
+    },
+    "macos": {
+      "typical_patterns": [
+        "/Users/*/projects/web*",
+        "/Users/*/Development/nodejs*",
+        "/Applications/*/mcp-projects*"
+      ],
+      "typical_commands": [
+        "python3",
+        "node",
+        "/usr/local/bin/mcp-server"
+      ]
+    },
+    "linux": {
+      "typical_patterns": [
+        "/home/*/projects/web*",
+        "/home/*/development/nodejs*",
+        "/opt/projects/*"
+      ],
+      "typical_commands": [
+        "python3",
+        "node",
+        "/usr/local/bin/mcp-server"
+      ]
+    }
+  }
+}
