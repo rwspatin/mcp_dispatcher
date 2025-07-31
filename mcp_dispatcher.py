@@ -286,6 +286,9 @@ def main():
     start_parser = subparsers.add_parser("start", help="Start the appropriate MCP server")
     start_parser.add_argument("--path", help="Path to determine server (defaults to current directory)")
     
+    # Help command
+    subparsers.add_parser("help", help="Show help information")
+    
     args = parser.parse_args()
     
     if not args.command:
@@ -318,6 +321,9 @@ def main():
     
     elif args.command == "start":
         dispatcher.start_server(args.path)
+    
+    elif args.command == "help":
+        parser.print_help()
 
 if __name__ == "__main__":
     main()
