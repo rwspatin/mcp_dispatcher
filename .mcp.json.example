@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "smart-mcp-dispatcher": {
+      "command": "mcp-proxy",
+      "args": [],
+      "env": {
+        "MCP_DISPATCHER_CONFIG": "/path/to/your/mcp_dispatcher/config.json"
+      }
+    }
+  }
+}

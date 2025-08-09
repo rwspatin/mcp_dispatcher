@@ -42,7 +42,7 @@ mcp-hadler/
 ├── setup.py                   # Interactive setup script
 ├── install.sh                 # System installation
 ├── config.json.template       # Configuration template
-├── claude_config_example.json # Claude Code configuration example
+├── .mcp.json.example          # Claude Code configuration example
 ├── requirements.txt           # Python dependencies
 ├── .gitignore                 # Git ignore patterns
 ├── README.md                  # Documentation
@@ -177,19 +177,52 @@ The Smart MCP Dispatcher works on **Windows**, **macOS**, and **Linux** with pla
 
 ### Configure Claude Code (All Platforms)
 
-Update Claude Code MCP configuration:
+Create `.mcp.json` file in your project root directory:
 ```json
 {
-  "mcp": {
-    "servers": {
-      "smart-dispatcher": {
-        "command": "mcp-proxy",
-        "args": []
+  "mcpServers": {
+    "smart-mcp-dispatcher": {
+      "command": "mcp-proxy",
+      "args": [],
+      "env": {
+        "MCP_DISPATCHER_CONFIG": "/path/to/your/mcp_dispatcher/config.json"
       }
     }
   }
 }
 ```
+
+**IMPORTANT**: Claude Code expects the configuration file to be named `.mcp.json` and located in your project's root directory, not in system config directories.
+
+### Claude Code Configuration Details
+
+Claude Code uses a **project-specific** `.mcp.json` file format that differs from other MCP clients:
+
+#### Correct Format for Claude Code
+```json
+{
+  "mcpServers": {
+    "server-name": {
+      "command": "command-or-path",
+      "args": ["arg1", "arg2"],
+      "env": {
+        "ENV_VAR": "value"
+      }
+    }
+  }
+}
+```
+
+#### Common Mistakes to Avoid
+- ❌ Using `claude_desktop_config.json` (this is for Claude Desktop, not Claude Code)
+- ❌ Using `mcp.servers` instead of `mcpServers`
+- ❌ Placing config in `~/.config/claude/` (Claude Code looks in project root)
+- ❌ Using system-wide configuration locations
+
+#### Configuration Locations by Client
+- **Claude Code**: `.mcp.json` in project root
+- **Claude Desktop**: `claude_desktop_config.json` in system config directory
+- **Other MCP Clients**: May vary, check their documentation
 
 ## CLI Commands
 
@@ -416,10 +449,14 @@ python setup.py
 REM 2. Install system-wide
 install.bat
 
-REM 3. Test configuration  
+REM 3. Create Claude Code config
+copy .mcp.json.example .mcp.json
+REM Edit .mcp.json with correct paths
+
+REM 4. Test configuration  
 mcp-dispatcher test
 
-REM 4. List current setup
+REM 5. List current setup
 mcp-dispatcher list
 ```
 
@@ -432,10 +469,14 @@ mcp-dispatcher list
 chmod +x install_mac.sh && ./install_mac.sh    # macOS
 chmod +x install.sh && ./install.sh            # Linux
 
-# 3. Test configuration  
+# 3. Create Claude Code config
+cp .mcp.json.example .mcp.json
+# Edit .mcp.json with correct paths
+
+# 4. Test configuration  
 mcp-dispatcher test
 
-# 4. List current setup
+# 5. List current setup
 mcp-dispatcher list
 ```
 
