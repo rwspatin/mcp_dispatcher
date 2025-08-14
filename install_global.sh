@@ -69,27 +69,37 @@ fi
 # Step 2: Install binaries
 echo -e "${YELLOW}🔧 Step 2: Installing Binaries${NC}"
 
+# Create installation directory
+INSTALL_DIR="$HOME/.local/bin"
+mkdir -p "$INSTALL_DIR"
+
+# Copy core files
+echo -e "${BLUE}Installing MCP dispatcher files...${NC}"
+cp mcp_dispatcher.py "$INSTALL_DIR/"
+cp mcp_dispatcher_exec.py "$INSTALL_DIR/mcp-dispatcher-exec"
+cp test_mcp_dispatcher.py "$INSTALL_DIR/"
+
+# Make executable
+chmod +x "$INSTALL_DIR/mcp_dispatcher.py"
+chmod +x "$INSTALL_DIR/mcp-dispatcher-exec"
+chmod +x "$INSTALL_DIR/test_mcp_dispatcher.py"
+
+# Create symlink for CLI
+ln -sf "$INSTALL_DIR/mcp_dispatcher.py" "$INSTALL_DIR/mcp-dispatcher"
+
+BINARY_PATH="$INSTALL_DIR/mcp-dispatcher-exec"
+
 if [[ "$PLATFORM" == "linux" ]]; then
-    if [[ -x "./install.sh" ]]; then
-        ./install.sh
-    else
-        chmod +x install.sh && ./install.sh
-    fi
-    BINARY_PATH="$HOME/.local/bin/mcp-dispatcher-exec"
     CONFIG_PATH="$HOME/.config/mcp_dispatcher/config.json"
 elif [[ "$PLATFORM" == "macos" ]]; then
-    if [[ -x "./install_mac.sh" ]]; then
-        ./install_mac.sh
-    else
-        chmod +x install_mac.sh && ./install_mac.sh
-    fi
-    BINARY_PATH="$HOME/.local/bin/mcp-dispatcher-exec"
     CONFIG_PATH="$HOME/Library/Application Support/mcp_dispatcher/config.json"
 else
     echo -e "${RED}❌ Windows installation not supported by this script${NC}"
-    echo -e "${YELLOW}Please run install.bat manually${NC}"
+    echo -e "${YELLOW}Please run install_global.bat manually${NC}"
     exit 1
 fi
+
+echo -e "${GREEN}✅ Binaries installed to $INSTALL_DIR${NC}"
 
 # Step 3: Configure Claude Code
 echo -e "${YELLOW}⚙️  Step 3: Claude Code Configuration${NC}"
@@ -158,9 +168,10 @@ echo ""
 echo -e "${GREEN}🎉 Installation Complete!${NC}"
 echo ""
 echo -e "${BLUE}What's Next:${NC}"
-echo -e "1. ${GREEN}Test different directories:${NC} cd to various project folders and run ${YELLOW}mcp-dispatcher test${NC}"
-echo -e "2. ${GREEN}Add more mappings:${NC} Use ${YELLOW}mcp-dispatcher add${NC} to configure more project paths"
-echo -e "3. ${GREEN}List current setup:${NC} Run ${YELLOW}mcp-dispatcher list${NC} to see all configured servers"
+echo -e "1. ${GREEN}Test installation:${NC} Run ${YELLOW}mcp-dispatcher test-install${NC} to verify everything works"
+echo -e "2. ${GREEN}Test different directories:${NC} cd to various project folders and run ${YELLOW}mcp-dispatcher test${NC}"
+echo -e "3. ${GREEN}Add more mappings:${NC} Use ${YELLOW}mcp-dispatcher add${NC} to configure more project paths"
+echo -e "4. ${GREEN}List current setup:${NC} Run ${YELLOW}mcp-dispatcher list${NC} to see all configured servers"
 
 if [[ "$CLAUDE_CONFIGURED" == false ]]; then
     echo -e "4. ${YELLOW}Configure Claude Code:${NC} Follow the manual configuration instructions above"

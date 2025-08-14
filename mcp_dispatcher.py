@@ -332,6 +332,11 @@ def main():
     # Enable MCP in current directory
     subparsers.add_parser("enable", help="Enable MCP dispatcher in current directory")
     
+    # Test installation
+    test_parser = subparsers.add_parser("test-install", help="Test MCP dispatcher installation")
+    test_parser.add_argument("--quick", action="store_true", help="Run only essential tests")
+    test_parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
+    
     args = parser.parse_args()
     
     if not args.command:
@@ -370,6 +375,28 @@ def main():
     
     elif args.command == "enable":
         dispatcher.enable_in_current_directory()
+    
+    elif args.command == "test-install":
+        # Run the comprehensive test suite
+        test_script = os.path.join(os.path.dirname(__file__), "test_mcp_dispatcher.py")
+        if not os.path.exists(test_script):
+            print("❌ Test script not found. Please ensure test_mcp_dispatcher.py is in the same directory.")
+            sys.exit(1)
+        
+        # Build test command
+        test_cmd = [sys.executable, test_script]
+        if args.quick:
+            test_cmd.append("--quick")
+        if args.verbose:
+            test_cmd.append("--verbose")
+        
+        # Run tests
+        try:
+            result = subprocess.run(test_cmd, check=False)
+            sys.exit(result.returncode)
+        except Exception as e:
+            print(f"❌ Error running tests: {e}")
+            sys.exit(1)
 
 if __name__ == "__main__":
     main()

@@ -33,7 +33,7 @@ chmod +x install_global.sh && ./install_global.sh
 claude mcp add smart-mcp-dispatcher --scope user ~/.local/bin/mcp-dispatcher-exec
 
 # 5. Test it works
-mcp-dispatcher test
+mcp-dispatcher test-install
 ```
 
 ### 🍎 macOS
@@ -52,7 +52,7 @@ chmod +x install_global.sh && ./install_global.sh
 claude mcp add smart-mcp-dispatcher --scope user ~/.local/bin/mcp-dispatcher-exec
 
 # 5. Test it works
-mcp-dispatcher test
+mcp-dispatcher test-install
 ```
 
 ### 🪟 Windows
@@ -71,7 +71,7 @@ REM 4. Configure Claude Code globally
 claude mcp add smart-mcp-dispatcher --scope user %USERPROFILE%\Scripts\mcp-dispatcher-exec
 
 REM 5. Test it works
-mcp-dispatcher test
+mcp-dispatcher test-install
 ```
 
 ## Installation
