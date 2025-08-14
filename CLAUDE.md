@@ -476,15 +476,109 @@ mcp-dispatcher test
 - **Reliable Runtime**: Simple, fast execution for Claude Code
 - **Easy Debugging**: Both files can be tested independently
 
-## Installation Helper for Claude
+## 🤖 Automated Setup with Claude
+
+The Smart MCP Dispatcher can be configured automatically through Claude Code CLI. This provides the **easiest installation experience** for users.
+
+### Recommended Workflow for Users
+
+**Step 1: Basic Installation**
+```bash
+# Install the dispatcher
+git clone <repository-url>
+cd mcp_dispatcher
+./install_global.sh
+```
+
+**Step 2: Ask Claude to Configure Everything**
+```bash
+claude chat "Please help me set up the Smart MCP Dispatcher with recommended MCP servers. I want:
+- Zen MCP server as my default for AI assistance
+- Filesystem MCP for file operations  
+- Git MCP for repository management
+- Configure path mappings for my development projects"
+```
+
+**Claude will then:**
+- ✅ Install and configure recommended MCP servers
+- ✅ Set up appropriate path mappings for the user's projects
+- ✅ Configure environment variables and API keys
+- ✅ Test the installation to ensure everything works
+- ✅ Provide usage guidance and examples
+
+### 🌟 Recommended MCP Server Configurations
+
+#### **Zen MCP Server** (Default Recommendation)
+```json
+{
+  "name": "zen-mcp",
+  "command": "npx",
+  "args": ["zen-mcp-server-199bio"],
+  "description": "Multi-AI orchestration with guided workflows",
+  "env": {
+    "GEMINI_API_KEY": "user_api_key_here",
+    "OPENAI_API_KEY": "user_api_key_here"
+  }
+}
+```
+
+#### **Filesystem MCP** (Essential)
+```json
+{
+  "name": "filesystem",
+  "command": "npx",
+  "args": ["@modelcontextprotocol/server-filesystem", "/path/to/allowed/directory"],
+  "description": "File and directory operations"
+}
+```
+
+#### **Git MCP** (Development)
+```json
+{
+  "name": "git",
+  "command": "npx", 
+  "args": ["@modelcontextprotocol/server-git", "--repository", "/path/to/repo"],
+  "description": "Git repository operations"
+}
+```
+
+### 🎯 Claude Configuration Examples
+
+When users ask for help, Claude can:
+
+#### **Basic Setup**
+```bash
+claude chat "Set up Smart MCP Dispatcher with Zen MCP as default"
+```
+
+#### **Development-Focused Setup**
+```bash
+claude chat "Configure MCP dispatcher for web development with filesystem, git, and browser MCP servers"
+```
+
+#### **Data Analysis Setup**
+```bash
+claude chat "Set up MCP dispatcher for data analysis with SQLite, filesystem, and Zen MCP servers"
+```
+
+#### **Custom Project Structure**
+```bash
+claude chat "Configure MCP dispatcher for my projects:
+- /home/user/work/* should use work-specific MCP
+- /home/user/personal/* should use Zen MCP
+- Default to filesystem MCP for everything else"
+```
+
+## 📋 Installation Helper for Claude
 
 When users ask for help with installation and configuration, you can:
 
-1. **Guide them through the setup process**
-2. **Help configure specific MCP servers** (Python, Node.js, etc.)
-3. **Create custom path patterns** for their project structure
-4. **Troubleshoot configuration issues**
-5. **Validate their setup** before they run it
+1. **Guide them through the automated setup process** using Claude CLI
+2. **Install and configure recommended MCP servers** (Zen, Filesystem, Git, etc.)
+3. **Create custom path patterns** for their specific project structure
+4. **Set up environment variables** and API keys securely
+5. **Test the entire installation** to ensure everything works
+6. **Provide usage examples** specific to their development workflow
 
 ### Quick Setup Commands for Users
 
