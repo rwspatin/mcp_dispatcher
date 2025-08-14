@@ -19,11 +19,27 @@ The Smart MCP Dispatcher is a path-based routing system for MCP (Model Context P
 
 ### Core Components
 
-1. **mcp_dispatcher.py** - Main dispatcher logic and CLI interface
-2. **mcp_proxy.py** - MCP protocol proxy server that forwards requests
+1. **mcp_dispatcher.py** - CLI management interface for configuration and testing
+2. **mcp_dispatcher_exec.py** - Self-contained dispatcher that Claude Code executes
 3. **setup.py** - Interactive configuration setup script
 4. **config.json.template** - Template for user configuration
-5. **install.sh** - System installation script
+5. **install_global.sh/.bat** - Global installation scripts for all platforms
+
+### Two-File Architecture
+
+The Smart MCP Dispatcher uses a **dual-file architecture**:
+
+#### **Management Interface** (`mcp_dispatcher.py`)
+- **Purpose**: User-facing CLI commands for configuration
+- **Commands**: `list`, `add`, `remove`, `test`, `start`, `enable`
+- **Usage**: `mcp-dispatcher list` or `mcp-dispatcher add "/path/*" server-name`
+- **Dependencies**: Full MCPDispatcher class with configuration management
+
+#### **Runtime Engine** (`mcp_dispatcher_exec.py`)  
+- **Purpose**: Lightweight dispatcher that Claude Code executes
+- **Functionality**: Path detection, server selection, and process execution
+- **Design**: Self-contained with embedded configuration loading
+- **Dependencies**: None (imports only standard library)
 
 ### How It Works
 
@@ -36,16 +52,17 @@ The Smart MCP Dispatcher is a path-based routing system for MCP (Model Context P
 ## File Structure
 
 ```
-mcp-hadler/
-├── mcp_dispatcher.py          # Main dispatcher logic
-├── mcp_proxy.py               # MCP protocol proxy
-├── setup.py                   # Interactive setup script
-├── install.sh                 # System installation
+mcp_dispatcher/
+├── mcp_dispatcher.py          # CLI management commands (list, add, remove, test)
+├── mcp_dispatcher_exec.py     # Self-contained dispatcher for Claude Code
+├── setup.py                   # Interactive configuration setup
+├── install_global.sh          # Global installation script (Linux/macOS)
+├── install_global.bat         # Global installation script (Windows)
 ├── config.json.template       # Configuration template
-├── .mcp.json.example          # Claude Code configuration example
+├── .mcp.json.template         # Claude Code configuration template
 ├── requirements.txt           # Python dependencies
 ├── .gitignore                 # Git ignore patterns
-├── README.md                  # Documentation
+├── README.md                  # Community documentation
 └── CLAUDE.md                  # This file
 ```
 
@@ -433,17 +450,31 @@ mcp-dispatcher test
 ## Development Notes
 
 ### Code Structure
-- **MCPDispatcher class**: Core routing logic
-- **MCPProxy class**: MCP protocol implementation
-- **Configuration validation**: Ensures proper setup
-- **Error handling**: User-friendly messages
+- **MCPDispatcher class**: Full configuration management and CLI interface
+- **Runtime functions**: Lightweight path matching and server execution
+- **Configuration validation**: Ensures proper setup before deployment
+- **Error handling**: User-friendly messages and debugging output
 
 ### Key Design Decisions
-1. **No hardcoded defaults** - Forces proper user configuration
-2. **Template-based setup** - Provides structure without assumptions
-3. **Local config priority** - Project-specific configurations
-4. **Comprehensive validation** - Prevents runtime errors
-5. **Interactive setup** - Guides users through configuration
+1. **Dual-file architecture** - Separates management from runtime execution
+2. **Self-contained runtime** - No import dependencies for Claude Code integration
+3. **Template-based setup** - Provides structure without assumptions
+4. **Global configuration** - Works everywhere without per-project setup
+5. **Comprehensive validation** - Prevents runtime errors
+6. **Interactive setup** - Guides users through configuration
+
+### Why Two Files?
+
+#### **Problem Solved**
+- **Import Issues**: `mcp_dispatcher_exec.py` has no external dependencies
+- **Startup Speed**: Runtime engine is lightweight and fast
+- **Reliability**: Self-contained execution reduces failure points
+- **Maintenance**: Clear separation of concerns
+
+#### **Best of Both Worlds**
+- **Rich CLI**: Full-featured management interface for users
+- **Reliable Runtime**: Simple, fast execution for Claude Code
+- **Easy Debugging**: Both files can be tested independently
 
 ## Installation Helper for Claude
 
