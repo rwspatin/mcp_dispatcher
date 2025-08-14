@@ -463,7 +463,7 @@ REM 1. Initial setup
 python setup.py
 
 REM 2. Install system-wide
-install.bat
+install_global.bat
 
 REM 3. Configure Claude Code globally
 claude mcp add smart-mcp-dispatcher --scope user %USERPROFILE%\Scripts\mcp-dispatcher-exec
@@ -480,9 +480,8 @@ mcp-dispatcher list
 # 1. Initial setup
 ./setup.py
 
-# 2. Install system-wide (choose correct script)
-chmod +x install_mac.sh && ./install_mac.sh    # macOS
-chmod +x install.sh && ./install.sh            # Linux
+# 2. Install system-wide
+chmod +x install_global.sh && ./install_global.sh    # macOS & Linux
 
 # 3. Configure Claude Code globally
 claude mcp add smart-mcp-dispatcher --scope user ~/.local/bin/mcp-dispatcher-exec

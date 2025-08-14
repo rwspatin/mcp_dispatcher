@@ -27,7 +27,7 @@ cd mcp_dispatcher
 ./setup.py
 
 # 3. Install globally
-chmod +x install.sh && ./install.sh
+chmod +x install_global.sh && ./install_global.sh
 
 # 4. Configure Claude Code globally
 claude mcp add smart-mcp-dispatcher --scope user ~/.local/bin/mcp-dispatcher-exec
@@ -45,8 +45,8 @@ cd mcp_dispatcher
 # 2. Setup configuration
 ./setup.py
 
-# 3. Install globally
-chmod +x install_mac.sh && ./install_mac.sh
+# 3. Install globally  
+chmod +x install_global.sh && ./install_global.sh
 
 # 4. Configure Claude Code globally
 claude mcp add smart-mcp-dispatcher --scope user ~/.local/bin/mcp-dispatcher-exec
@@ -65,7 +65,7 @@ REM 2. Setup configuration
 python setup.py
 
 REM 3. Install globally
-install.bat
+install_global.bat
 
 REM 4. Configure Claude Code globally
 claude mcp add smart-mcp-dispatcher --scope user %USERPROFILE%\Scripts\mcp-dispatcher-exec
