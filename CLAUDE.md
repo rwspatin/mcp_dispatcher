@@ -177,50 +177,66 @@ The Smart MCP Dispatcher works on **Windows**, **macOS**, and **Linux** with pla
 
 ### Configure Claude Code (All Platforms)
 
-Create `.mcp.json` file in your project root directory:
+The Smart MCP Dispatcher works **globally** in Claude Code - no need for project-specific configurations!
+
+#### Global Configuration
+
+Add the dispatcher to your Claude Code user settings:
+
+```bash
+# Option 1: Use Claude Code CLI (Recommended)
+claude mcp add smart-mcp-dispatcher --scope user /path/to/mcp-dispatcher-exec
+
+# Option 2: Manual configuration (if CLI doesn't work)
+```
+
+For manual configuration, edit your Claude Code user config file:
+
+**File Location:**
+- **Linux**: `~/.config/claude-code/config.json`
+- **macOS**: `~/Library/Application Support/ClaudeCode/config.json`
+- **Windows**: `%APPDATA%\ClaudeCode\config.json`
+
+**Configuration Format:**
 ```json
 {
-  "mcpServers": {
-    "smart-mcp-dispatcher": {
-      "command": "mcp-proxy",
-      "args": [],
-      "env": {
-        "MCP_DISPATCHER_CONFIG": "/path/to/your/mcp_dispatcher/config.json"
+  "mcp": {
+    "servers": {
+      "smart-mcp-dispatcher": {
+        "command": "/path/to/mcp-dispatcher-exec",
+        "args": [],
+        "env": {
+          "MCP_DISPATCHER_CONFIG": "/path/to/your/config.json"
+        }
       }
     }
   }
 }
 ```
 
-**IMPORTANT**: Claude Code expects the configuration file to be named `.mcp.json` and located in your project's root directory, not in system config directories.
+#### Installation Paths by Platform
 
-### Claude Code Configuration Details
+**Linux:**
+- Binary: `~/.local/bin/mcp-dispatcher-exec`
+- Config: `~/.config/mcp_dispatcher/config.json`
 
-Claude Code uses a **project-specific** `.mcp.json` file format that differs from other MCP clients:
+**macOS:**
+- Binary: `~/.local/bin/mcp-dispatcher-exec`
+- Config: `~/Library/Application Support/mcp_dispatcher/config.json`
 
-#### Correct Format for Claude Code
-```json
-{
-  "mcpServers": {
-    "server-name": {
-      "command": "command-or-path",
-      "args": ["arg1", "arg2"],
-      "env": {
-        "ENV_VAR": "value"
-      }
-    }
-  }
-}
-```
+**Windows:**
+- Binary: `%USERPROFILE%\Scripts\mcp-dispatcher-exec.exe`
+- Config: `%APPDATA%\mcp_dispatcher\config.json`
 
-#### Common Mistakes to Avoid
-- ❌ Using `claude_desktop_config.json` (this is for Claude Desktop, not Claude Code)
-- ❌ Using `mcp.servers` instead of `mcpServers`
-- ❌ Placing config in `~/.config/claude/` (Claude Code looks in project root)
-- ❌ Using system-wide configuration locations
+#### ✅ Global Benefits
+
+- **Works everywhere**: No `.mcp.json` files needed in projects
+- **Automatic routing**: Changes servers based on directory path
+- **Single configuration**: Manage all MCP servers from one place
+- **Just like any MCP server**: Install once, use everywhere
 
 #### Configuration Locations by Client
-- **Claude Code**: `.mcp.json` in project root
+- **Claude Code**: Global user config (this guide)
 - **Claude Desktop**: `claude_desktop_config.json` in system config directory
 - **Other MCP Clients**: May vary, check their documentation
 
@@ -449,9 +465,8 @@ python setup.py
 REM 2. Install system-wide
 install.bat
 
-REM 3. Create Claude Code config
-copy .mcp.json.example .mcp.json
-REM Edit .mcp.json with correct paths
+REM 3. Configure Claude Code globally
+claude mcp add smart-mcp-dispatcher --scope user %USERPROFILE%\Scripts\mcp-dispatcher-exec
 
 REM 4. Test configuration  
 mcp-dispatcher test
@@ -469,9 +484,8 @@ mcp-dispatcher list
 chmod +x install_mac.sh && ./install_mac.sh    # macOS
 chmod +x install.sh && ./install.sh            # Linux
 
-# 3. Create Claude Code config
-cp .mcp.json.example .mcp.json
-# Edit .mcp.json with correct paths
+# 3. Configure Claude Code globally
+claude mcp add smart-mcp-dispatcher --scope user ~/.local/bin/mcp-dispatcher-exec
 
 # 4. Test configuration  
 mcp-dispatcher test
@@ -479,5 +493,12 @@ mcp-dispatcher test
 # 5. List current setup
 mcp-dispatcher list
 ```
+
+**Alternative Manual Configuration:**
+If the `claude mcp add` command doesn't work, manually edit your Claude Code config:
+
+1. **Find config file**: `~/.config/claude-code/config.json` (Linux) or equivalent
+2. **Add MCP server**: Use the configuration format shown in the Global Configuration section above
+3. **Restart Claude Code**: For changes to take effect
 
 The project is designed to be completely generic and community-friendly, requiring users to configure their own paths and MCP servers while providing helpful guidance throughout the process.

@@ -22,9 +22,11 @@ import logging
 
 class MCPDispatcher:
     def __init__(self, config_file: str = None):
-        # First check for local config.json, then fall back to user config
+        # Priority order: explicit config_file -> MCP_DISPATCHER_CONFIG env var -> local config.json -> default config
         if config_file:
             self.config_file = config_file
+        elif os.environ.get("MCP_DISPATCHER_CONFIG"):
+            self.config_file = os.environ.get("MCP_DISPATCHER_CONFIG")
         elif os.path.exists("config.json"):
             self.config_file = "config.json"
         else:
@@ -256,6 +258,44 @@ class MCPDispatcher:
         except FileNotFoundError as e:
             self.logger.error(f"MCP server command not found: {e}")
             sys.exit(1)
+    
+    def enable_in_current_directory(self):
+        """Enable MCP dispatcher in current directory by copying .mcp.json"""
+        current_dir = os.getcwd()
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        source_mcp_config = os.path.join(script_dir, ".mcp.json")
+        target_mcp_config = os.path.join(current_dir, ".mcp.json")
+        
+        print(f"🚀 Enabling MCP dispatcher in: {current_dir}")
+        
+        # Check if source .mcp.json exists
+        if not os.path.exists(source_mcp_config):
+            print(f"❌ Error: {source_mcp_config} not found!")
+            print("Please ensure .mcp.json exists in the MCP dispatcher directory.")
+            return False
+        
+        # Check if target already exists
+        if os.path.exists(target_mcp_config):
+            response = input(f"⚠️  .mcp.json already exists in {current_dir}. Overwrite? (y/N): ")
+            if response.lower() != 'y':
+                print("❌ Operation cancelled.")
+                return False
+        
+        try:
+            # Copy the .mcp.json file
+            import shutil
+            shutil.copy2(source_mcp_config, target_mcp_config)
+            print(f"✅ MCP configuration copied successfully!")
+            print(f"📁 Location: {target_mcp_config}")
+            print()
+            print("🎉 MCP dispatcher is now enabled in this directory!")
+            print("💡 You can now use Claude Code with MCP tools in this project.")
+            print("🧪 Test it with: mcp-dispatcher test")
+            return True
+            
+        except Exception as e:
+            print(f"❌ Error copying MCP configuration: {e}")
+            return False
 
 def main():
     parser = argparse.ArgumentParser(description="Smart MCP Dispatcher")
@@ -288,6 +328,9 @@ def main():
     
     # Help command
     subparsers.add_parser("help", help="Show help information")
+    
+    # Enable MCP in current directory
+    subparsers.add_parser("enable", help="Enable MCP dispatcher in current directory")
     
     args = parser.parse_args()
     
@@ -324,6 +367,9 @@ def main():
     
     elif args.command == "help":
         parser.print_help()
+    
+    elif args.command == "enable":
+        dispatcher.enable_in_current_directory()
 
 if __name__ == "__main__":
     main()

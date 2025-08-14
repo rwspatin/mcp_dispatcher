@@ -60,21 +60,30 @@ class MCPProxy:
         self.logger.info(f"Starting MCP server: {' '.join(cmd)}")
         
         try:
+            # Prepare environment variables
+            env = os.environ.copy()
+            if 'env' in server_config:
+                env.update(server_config['env'])
+            
             self.current_process = subprocess.Popen(
                 cmd,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                text=True
+                text=True,
+                env=env
             )
             
             # Create new session
             server_params = StdioServerParameters(
                 command=server_config['command'],
-                args=server_config['args']
+                args=server_config['args'],
+                env=env  # Use the merged environment
             )
             
-            self.current_session = await stdio_client(server_params)
+            # stdio_client returns a context manager, we need to enter it
+            session_context = stdio_client(server_params)
+            self.current_session = await session_context.__aenter__()
             self.current_session._server_config = server_config  # Store config for comparison
             
             return self.current_session

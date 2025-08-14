@@ -1,16 +1,78 @@
 # Smart MCP Dispatcher
 
-Dynamically chooses which MCP server to use based on your current directory path. Perfect for developers working on multiple projects that require different MCP tools and capabilities.
+🚀 **Global MCP server that automatically selects the right MCP tools based on your current directory!**
 
-## Features
+Perfect for developers working on multiple projects that require different MCP tools and capabilities. Works globally in Claude Code - install once, use everywhere!
 
-- **Path-based routing**: Automatically selects MCP servers based on directory patterns
-- **Multi-language support**: Works with Python, Node.js, and any executable MCP servers
-- **Wildcard support**: Use glob patterns to match directory structures
-- **CLI management**: Easy-to-use command-line interface for managing mappings
-- **Transparent proxy**: Works seamlessly with Claude Code and other MCP clients
-- **Default fallback**: Configurable default server when no patterns match
-- **Local configuration**: Supports local `config.json` for project-specific setups
+## ✨ Features
+
+- **🗂️ Path-based routing**: Automatically selects MCP servers based on directory patterns
+- **🌍 Global installation**: Works everywhere in Claude Code without project-specific setup
+- **🔧 Multi-language support**: Works with Python, Node.js, and any executable MCP servers
+- **🎯 Wildcard support**: Use glob patterns to match directory structures
+- **⚡ CLI management**: Easy-to-use command-line interface for managing mappings
+- **🔄 Transparent operation**: Works seamlessly with Claude Code and other MCP clients
+- **🛡️ Default fallback**: Configurable default server when no patterns match
+- **📁 Local configuration**: Supports local `config.json` for project-specific setups
+
+## 🚀 Quick Installation
+
+### 🐧 Linux
+```bash
+# 1. Clone repository
+git clone <repository-url>
+cd mcp_dispatcher
+
+# 2. Setup configuration
+./setup.py
+
+# 3. Install globally
+chmod +x install.sh && ./install.sh
+
+# 4. Configure Claude Code globally
+claude mcp add smart-mcp-dispatcher --scope user ~/.local/bin/mcp-dispatcher-exec
+
+# 5. Test it works
+mcp-dispatcher test
+```
+
+### 🍎 macOS
+```bash
+# 1. Clone repository
+git clone <repository-url>
+cd mcp_dispatcher
+
+# 2. Setup configuration
+./setup.py
+
+# 3. Install globally
+chmod +x install_mac.sh && ./install_mac.sh
+
+# 4. Configure Claude Code globally
+claude mcp add smart-mcp-dispatcher --scope user ~/.local/bin/mcp-dispatcher-exec
+
+# 5. Test it works
+mcp-dispatcher test
+```
+
+### 🪟 Windows
+```cmd
+REM 1. Clone repository
+git clone <repository-url>
+cd mcp_dispatcher
+
+REM 2. Setup configuration
+python setup.py
+
+REM 3. Install globally
+install.bat
+
+REM 4. Configure Claude Code globally
+claude mcp add smart-mcp-dispatcher --scope user %USERPROFILE%\Scripts\mcp-dispatcher-exec
+
+REM 5. Test it works
+mcp-dispatcher test
+```
 
 ## Installation
 
@@ -101,22 +163,40 @@ mcp-dispatcher test
 mcp-dispatcher test --path /path/to/your/project
 ```
 
-### 4. Configure Claude Code
+### 4. Configure Claude Code (Global)
 
-Update your Claude Code MCP configuration to use the dispatcher:
+The dispatcher works globally in Claude Code. Choose one method:
+
+#### Option A: Claude Code CLI (Recommended)
+```bash
+claude mcp add smart-mcp-dispatcher --scope user /path/to/mcp-dispatcher-exec
+```
+
+#### Option B: Manual Configuration
+Edit your Claude Code config file:
+
+**File locations:**
+- Linux: `~/.config/claude-code/config.json`
+- macOS: `~/Library/Application Support/ClaudeCode/config.json`  
+- Windows: `%APPDATA%\ClaudeCode\config.json`
 
 ```json
 {
   "mcp": {
     "servers": {
-      "smart-dispatcher": {
-        "command": "mcp-proxy",
-        "args": []
+      "smart-mcp-dispatcher": {
+        "command": "/path/to/mcp-dispatcher-exec",
+        "args": [],
+        "env": {
+          "MCP_DISPATCHER_CONFIG": "/path/to/your/config.json"
+        }
       }
     }
   }
 }
 ```
+
+**That's it!** No need for `.mcp.json` files in every project. The dispatcher now works globally across all directories.
 
 ## Usage Examples
 
