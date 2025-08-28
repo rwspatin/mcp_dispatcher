@@ -14,6 +14,7 @@ Perfect for developers working on multiple projects that require different MCP t
 - **🔄 Transparent operation**: Works seamlessly with Claude Code and other MCP clients
 - **🛡️ Default fallback**: Configurable default server when no patterns match
 - **📁 Local configuration**: Supports local `config.json` for project-specific setups
+- **🎯 Claude Code integration**: Properly detects Claude Code's working directory using PWD environment variable
 
 ## ⚡ Super Quick Start
 

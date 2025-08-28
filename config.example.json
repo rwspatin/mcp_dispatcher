@@ -1,0 +1,41 @@
+{
+  "path_mappings": [
+    {
+      "path_pattern": "/path/to/your/project*",
+      "mcp_server": {
+        "name": "your-mcp-server",
+        "command": "your-mcp-command",
+        "args": ["arg1", "arg2"],
+        "description": "Your MCP Server Description",
+        "env": {
+          "API_KEY": "your-api-key-here"
+        }
+      }
+    },
+    {
+      "path_pattern": "/path/to/crypto/projects*",
+      "mcp_server": {
+        "name": "crypto-mcp",
+        "command": "npx",
+        "args": ["tsx", "/path/to/crypto-mcp/src/index.ts"],
+        "description": "Cryptocurrency development MCP server",
+        "env": {
+          "GEMINI_API_KEY": "your-gemini-api-key"
+        }
+      }
+    }
+  ],
+  "default_mcp_server": {
+    "name": "default-mcp",
+    "command": "python3",
+    "args": ["/path/to/default/mcp/server.py"],
+    "description": "Default MCP server for general development",
+    "env": {
+      "API_KEY": "your-default-api-key"
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "/tmp/mcp_dispatcher.log"
+  }
+}
